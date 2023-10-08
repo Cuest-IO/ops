@@ -1,29 +1,29 @@
 variable "project_name" {
-  default = "cuest"
+  default = "string"
 }
 
 variable "domain_name" {
-  default     = "cuest.io" 
+  default     = "string" 
 }
 
 variable "zone_id" {
-    default = "Z07964423DC23BZLNJZNT"
+    default = "string"
 }
 
 variable "record_name" {
-  default     = "record.cuest.io"  
+  default     = "string"  
 }
 
 variable "record_type" {
-  default     = "A" 
+  default     = "string" 
 }
 
 variable "alias_target" {
-  default     = "d36w6f0mlqjgzj.cloudfront.net."
+  default     = "string"
 }
 
 variable "cloudfront_zone_id" {
-  default     = "Z2FDTNDATAQYW2" 
+  default     = "string" 
 }
 
 

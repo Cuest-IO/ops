@@ -1,22 +1,23 @@
 locals {
   env = {
     dev = {
-        domain_name =            "cuest.io"
-        project_name =           "cuest"
-        zone_id =                "Z07964423DC23BZLNJZNT"
-        record_name =            "record.cuest.io"
-        record_type =            "A"
-        alias_target =           "d36w6f0mlqjgzj.cloudfront.net."
-        cloudfront_zone_id =     "Z2FDTNDATAQYW2"
-        deployment_bucket_name = "cuest_dev_bucket"
+        domain_name =            var.domain_name
+        project_name =           var.project_name
+        record_name =            var.record_name
+        record_type =            var.record_type
+        alias_target =           var.alias_target
+        cloudfront_zone_id =     var.cloudfront_zone_id
+        deployment_bucket_name = var.deployment_bucket_name
     }
-
     stage = {
-    }
 
+   }
     prod = {
-    }
+
+   }
   }
   environment = contains(keys(local.env), terraform.workspace) ? terraform.workspace : "dev"
   workspace   = merge(local.env["dev"], local.env[local.environment])
 }
+
+

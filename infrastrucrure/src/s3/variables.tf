@@ -1,7 +1,14 @@
 variable "project_name" {
-    default = "cuest"
+  type        = string
+  default     = ""
 }
 
 variable "deployment_bucket_name" {
-    default = "cuest_dev_bucket"
+  type        = string
+  default     = ""
+}
+
+variable "environment" {
+  type        = string
+  default     = "dev"
 }
