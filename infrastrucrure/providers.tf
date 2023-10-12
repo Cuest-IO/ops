@@ -1,12 +1,12 @@
 provider "aws" {
-    region = var.region_name
+    region = "eu-west-1" 
 }
 
 terraform {
   backend "s3" {
-    bucket  = var.state_bucket_name
-    key     = var.state_bucket_key
-    region  = var.region_name
+    bucket  = "cuest-terraform-state-bucket" 
+    key     = "stage/cuest-project/terraform.tfstate" 
+    region  = "eu-west-1" 
     encrypt = true
   }
 }

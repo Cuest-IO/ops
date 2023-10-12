@@ -10,10 +10,18 @@ variable "region_name" {
 
 variable "domain_name" {
   type        = string
+  default     = "cuest.io"
 }
 
-variable "record_name" {
-  type        = string
+variable "environments" {
+  type        = list(string)
+  default     = ["dev", "stage", "prod"]
+}
+
+variable "subdomains" {
+  description = "Subdomains to be created under each environment"
+  type        = list(string)
+  default     = ["www", "docs", "console"]
 }
 
 variable "record_type" {
@@ -22,21 +30,33 @@ variable "record_type" {
 }
 
 variable "alias_target" {
-  type        = string
+  description = "The alias DNS target"
+  type        = map(string)
+  default     = {
+    "dev"    = "cuest-dev-bucket.s3-website.us-east-1.amazonaws.com",
+    "stage"  = "cuest-stage-bucket.s3-website.us-east-1.amazonaws.com",
+    "prod"   = "cuest-prod-bucket.s3-website.us-east-1.amazonaws.com"
+  }
 }
 
 variable "cloudfront_zone_id" {
+  description = "CloudFront hosted zone ID"
   type        = string
+  # You should set the appropriate default value.
+}
+
+variable "s3_website_zone_id" {
+  description = "The zone ID for the S3 website endpoint"
+  type        = string
+  default     = "Z3AQBSTGFYJSTF" 
+}
+
+variable "record_name" {
+  type        = string
+  default     = "stage.cuest.io" 
 }
 
 variable "deployment_bucket_name" {
   type        = string
-}
-
-variable "state_bucket_name" {
-  type        = string
-}
-
-variable "state_bucket_key" {
-  type        = string
+  default     = "cuest-stage-bucket"  
 }

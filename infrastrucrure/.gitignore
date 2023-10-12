@@ -1,5 +1,0 @@
-.terraform/
-.terraform.tfstate.d/
-*.tfstate
-.terraform.lock.hcl
-*.terraform
