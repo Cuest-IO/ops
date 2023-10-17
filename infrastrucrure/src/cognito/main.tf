@@ -1,3 +1,8 @@
+locals {
+  callback_url = "https://console.${var.environment}.${var.domain_name}/callback"
+  logout_url  = "https://console.${var.environment}.${var.domain_name}/logout"
+}
+
 # Cognito User Pool
 resource "aws_cognito_user_pool" "user_pool" {
   name = "${var.environment}-cuest-user-pool"
@@ -19,8 +24,8 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   name            = "${var.environment}-cuest-user-pool-client"
   user_pool_id    = aws_cognito_user_pool.user_pool.id
   generate_secret = true
-  callback_urls   = var.callback_urls
-  logout_urls     = var.logout_urls
+  callback_urls   = [local.callback_url]
+  logout_urls     = [local.logout_url]
 }
 
 # Cognito Identity Pool

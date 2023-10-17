@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "environment" {
   type        = string
-  description = "Environment for the project (e.g., prod, dev, stage)."
+  description = "Environment for the project (prod, dev, stage)."
 }
 
 variable "domain_name" {
@@ -17,11 +17,9 @@ variable "domain_name" {
 variable "callback_urls" {
   description = "List of allowed callback URLs for the identity providers."
   type        = list(string)
-  default     = ["https://console.${var.environment}.${var.domain_name}/callback"]
 }
 
 variable "logout_urls" {
   description = "List of allowed logout URLs for the identity providers."
   type        = list(string)
-  default     = ["https://console.${var.environment}.${var.domain_name}/logout"]
 }
