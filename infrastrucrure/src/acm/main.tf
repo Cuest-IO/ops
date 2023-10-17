@@ -1,13 +1,13 @@
 resource "aws_acm_certificate" "cert" {
-  domain_name       = "stage.cuest.io"
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   subject_alternative_names = [
-    "www.stage.cuest.io",
-    "docs.stage.cuest.io",
-    "www.docs.stage.cuest.io",
-    "console.stage.cuest.io",
-    "www.console.stage.cuest.io"
+    "www.${var.domain_name}",
+    "docs.${var.domain_name}",
+    "www.docs.${var.domain_name}",
+    "console.${var.domain_name}",
+    "www.console.${var.domain_name}"
   ]
 
   tags = {
