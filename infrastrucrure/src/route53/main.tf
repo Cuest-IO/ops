@@ -12,7 +12,8 @@ resource "aws_route53_record" "stage_record" {
   name    = "stage.${var.domain_name}"
   type    = "A"
   alias {
-    name                   = "${var.project_name}-stage-bucket.s3-website.${var.region_name}.amazonaws.com"
+    name                   = "${var.project_name}-console-stage-bucket.s3-website-${var.region_name}.amazonaws.com"
+
     zone_id                = var.s3_website_zone_id
     evaluate_target_health = false
   }

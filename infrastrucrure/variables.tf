@@ -42,7 +42,7 @@ variable "alias_target" {
 variable "cloudfront_zone_id" {
   description = "CloudFront hosted zone ID"
   type        = string
-  # You should set the appropriate default value.
+  default     = "Z2FDTNDATAQYW2"
 }
 
 variable "s3_website_zone_id" {
