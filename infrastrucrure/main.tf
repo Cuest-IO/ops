@@ -1,10 +1,13 @@
 module "route53" {
-  source        = "./src/route53"
-  project_name  = local.workspace.project_name
-  domain_name   = local.workspace.domain_name
-  environment   = local.environment
-  region_name   = var.region_name
-  s3_website_zone_id  = var.s3_website_zone_id 
+  source                              = "./src/route53"
+  project_name                        = local.workspace.project_name
+  domain_name                         = local.workspace.domain_name
+  environment                         = local.environment
+  region_name                         = var.region_name
+  s3_website_zone_id                  = var.s3_website_zone_id 
+  stage_bucket_domain                 = module.s3.stage_bucket_website_domain
+  docs_stage_bucket_website_domain    = module.s3.docs_stage_bucket_website_domain
+  console_stage_bucket_website_domain = module.s3.console_stage_bucket_website_domain
 }
 
 module "s3" {
