@@ -29,23 +29,41 @@ variable "type" {
   default = "A"
 }
 
-variable "stage_bucket_domain" {
-  description = "The domain of the stage bucket"
+variable "cloudfront_zone_id" {
+  description = "The CloudFront zone ID"
   type        = string
-  default     = "cuest-stage-bucket.s3-website-us-east-1.amazonaws.com"
 }
 
-variable "docs_stage_bucket_website_domain" {
-  description = "The domain of the docs stage bucket"
+variable "stage_bucket_name" {
+  description = "Name of the stage bucket"
   type        = string
-  default     = "cuest-stage-bucket.s3-website-us-east-1.amazonaws.com"  
 }
 
-variable "console_stage_bucket_website_domain" {
-  description = "The domain of the console stage bucket"
+variable "docs_stage_bucket_name" {
+  description = "Name of the docs stage bucket"
   type        = string
-  default     = "cuest-console-stage-bucket.s3-website-us-east-1.amazonaws.com"  
 }
+
+variable "console_stage_bucket_name" {
+  description = "Name of the console stage bucket"
+  type        = string
+}
+
+variable "stage_bucket_distribution_domain_name" {
+  description = "Domain name for the stage bucket distribution"
+  type        = string
+}
+
+variable "docs_stage_bucket_distribution_domain_name" {
+  description = "Domain name for the docs stage bucket distribution"
+  type        = string
+}
+
+variable "console_stage_bucket_distribution_domain_name" {
+  description = "Domain name for the console stage bucket distribution"
+  type        = string
+}
+
 
 
 
