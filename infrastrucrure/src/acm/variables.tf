@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "domain_name" {
   type        = string
-  default     = "stage.cuest.io"
+  default     = "cuest.io"
 }
 
 variable "environment" {

@@ -19,11 +19,6 @@ variable "s3_website_zone_id" {
   default = "Z3AQBSTGFYJSTF"
 }
 
-variable "zone_id" {
-  type = string
-  default = "Z06509522CN5N0BIKFAVE"
-}
-
 variable "type" {
   type = string
   default = "A"
@@ -64,6 +59,10 @@ variable "console_stage_bucket_distribution_domain_name" {
   type        = string
 }
 
+variable "cuest_zone_id" {
+  type        = string
+  default     = "cuest.io"
+}
 
 
 

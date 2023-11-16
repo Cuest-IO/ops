@@ -12,8 +12,7 @@ module "route53" {
   stage_bucket_distribution_domain_name           = module.cloudfront["stage"].stage_bucket_distribution_domain_name
   docs_stage_bucket_distribution_domain_name      = module.cloudfront["docs"].stage_bucket_distribution_domain_name
   console_stage_bucket_distribution_domain_name   = module.cloudfront["console"].stage_bucket_distribution_domain_name
-  
-
+  cuest_zone_id                                   = data.aws_route53_zone.route53_zone.zone_id
 }
 
 module "s3" {
