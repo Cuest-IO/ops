@@ -1,6 +1,6 @@
 resource "aws_acm_certificate" "cert" {
-  domain_name       = "cuest.io"
-  validation_method = "DNS"
+  domain_name       = "www.cuest.io"
+  validation_method = "EMAIL" //DNS 
 
   tags = {
     Name = "cuest-cert"
