@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "stage_bucket" {
+resource "aws_s3_bucket" "website_bucket" {
   bucket = "cuest-stage-bucket"
   acl    = "private"
   website {

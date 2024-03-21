@@ -1,3 +1,7 @@
+variable "domain_name" {
+  type = string
+}
+
 variable "bucket" {
   description = "Name of the S3 bucket"
   type        = string
@@ -8,8 +12,8 @@ variable "bucket_regional_domain" {
   type        = string
 }
 
-variable "stage_bucket_name" {
-  description = "The name of the stage S3 bucket"
+variable "website_bucket_name" {
+  description = "The name of the website S3 bucket"
   type        = string
 }
 
@@ -30,11 +34,6 @@ variable "docs_stage_bucket_regional_domain_name" {
 
 variable "console_bucket_name" {
   description = "The name of the console S3 bucket"
-  type        = string
-}
-
-variable "docs_stage_bucket_name" {
-  description = "Name of the docs stage bucket"
   type        = string
 }
 

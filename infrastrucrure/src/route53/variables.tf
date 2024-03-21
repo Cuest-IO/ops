@@ -16,7 +16,7 @@ variable "region_name" {
 
 variable "s3_website_zone_id" {
   type        = string
-  default = "Z3AQBSTGFYJSTF"
+  # default = "Z3AQBSTGFYJSTF"
 }
 
 variable "type" {
@@ -29,12 +29,12 @@ variable "cloudfront_zone_id" {
   type        = string
 }
 
-variable "stage_bucket_name" {
+variable "website_bucket_name" {
   description = "Name of the stage bucket"
   type        = string
 }
 
-variable "docs_stage_bucket_name" {
+variable "docs_bucket_name" {
   description = "Name of the docs stage bucket"
   type        = string
 }
@@ -63,7 +63,3 @@ variable "cuest_zone_id" {
   type        = string
   default     = "cuest.io"
 }
-
-
-
-
