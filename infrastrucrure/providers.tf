@@ -1,9 +1,13 @@
 terraform {
-  backend "s3" {
-    bucket  = "cuest-state-bucket"
-    key     = "cuest-project/terraform.tfstate"
-    region  = "us-east-1"
-    encrypt = true
-    profile = "cuest_dev"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
 }
+
+provider "aws" {
+  region  = var.region_name
+}
+

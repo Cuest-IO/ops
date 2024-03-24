@@ -1,11 +1,17 @@
-output "stage_bucket_distribution_domain_name" {
-  value = aws_cloudfront_distribution.stage_bucket_distribution.domain_name  
+// doc
+output "docs_bucket_distribution_domain_name" {
+  value = aws_cloudfront_distribution.docs_bucket_distribution.domain_name 
 }
 
-output "docs_stage_bucket_distribution_domain_name" {
-  value = aws_cloudfront_distribution.docs_stage_bucket_distribution.domain_name 
+output "docs_cloudfront_origin_access_identity_iam" {
+  value = aws_cloudfront_origin_access_identity.docs_oai.iam_arn
 }
 
-output "console_stage_bucket_distribution_domain_name" {
-  value = aws_cloudfront_distribution.console_stage_bucket_distribution.domain_name  
+//console
+output "console_bucket_distribution_domain_name" {
+  value = aws_cloudfront_distribution.console_bucket_distribution.domain_name  
+}
+
+output "console_cloudfront_origin_access_identity_iam" {
+  value = aws_cloudfront_origin_access_identity.console_oai.iam_arn
 }

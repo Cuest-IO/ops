@@ -1,44 +1,23 @@
-resource "aws_acm_certificate" "cert" {
-  domain_name       = var.domain_name
-  validation_method = "EMAIL" //DNS 
-
-  tags = {
-    Name = "cuest-cert"
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_acm_certificate_validation" "cert_validation" {
-  certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [for record in aws_acm_certificate.cert.domain_validation_options : record.resource_record_name]
-
-  depends_on = [aws_acm_certificate.cert]
-}
-
-
-
-
-resource "aws_cloudfront_distribution" "stage_bucket_distribution" {
+resource "aws_cloudfront_distribution" "docs_bucket_distribution" {
   origin {
-    domain_name = var.stage_bucket_regional_domain_name
-    origin_id   = "StageBucketS3Origin"
+    domain_name = var.doc_bucket_website_domain
+    origin_id   = "${var.environment}-DocsBucketS3Origin"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.stage_oai.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.docs_oai.cloudfront_access_identity_path
     }
   }
- enabled             = true
+
+  enabled             = true
   is_ipv6_enabled     = true
-  comment             = "${var.comment_prefix} ${var.stage_bucket_regional_domain_name}"
-  default_root_object = var.default_root_object
+  comment             = "${var.comment_prefix} ${var.doc_bucket_website_domain}"
+  default_root_object = "index.html"
+  aliases = ["docs.${var.domain_name}", "www.docs.${var.domain_name}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "StageBucketS3Origin"
+    target_origin_id = "${var.environment}-DocsBucketS3Origin"
 
     forwarded_values {
       query_string = false
@@ -54,6 +33,20 @@ resource "aws_cloudfront_distribution" "stage_bucket_distribution" {
     max_ttl                = 86400
   }
 
+  custom_error_response {
+    error_code            = 403
+    error_caching_min_ttl = var.error_ttl
+    response_code         = 403
+    response_page_path    = "/error.html"
+  }
+
+  custom_error_response {
+    error_code            = 404
+    error_caching_min_ttl = var.error_ttl
+    response_code         = 404
+    response_page_path    = "/error.html"
+  }
+
   price_class = "PriceClass_100"
 
   restrictions {
@@ -63,34 +56,34 @@ resource "aws_cloudfront_distribution" "stage_bucket_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cert.arn
+    acm_certificate_arn      = var.docs_certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.1_2016"
   }
 
-  depends_on = [aws_acm_certificate_validation.cert_validation]
-
+  depends_on = [var.docs_certificate_validation]
 }
 
-resource "aws_cloudfront_distribution" "docs_stage_bucket_distribution" {
+resource "aws_cloudfront_distribution" "console_bucket_distribution" {
   origin {
-    domain_name = var.docs_stage_bucket_regional_domain_name
-    origin_id   = "DocsStageBucketS3Origin"
-
+    domain_name = var.console_bucket_website_domain
+    origin_id   = "${var.environment}-ConsoleBucketS3Origin"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.docs_stage_oai.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.console_oai.cloudfront_access_identity_path
     }
   }
- enabled             = true
+
+  enabled             = true
   is_ipv6_enabled     = true
-  comment             = "${var.comment_prefix} ${var.docs_stage_bucket_regional_domain_name}"
-  default_root_object = var.default_root_object
+  comment             = "${var.comment_prefix} ${var.console_bucket_website_domain}"
+  default_root_object = "index.html"
+  aliases = ["console.${var.domain_name}", "www.console.${var.domain_name}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "DocsStageBucketS3Origin"
+    target_origin_id = "${var.environment}-ConsoleBucketS3Origin"
 
     forwarded_values {
       query_string = false
@@ -106,56 +99,18 @@ resource "aws_cloudfront_distribution" "docs_stage_bucket_distribution" {
     max_ttl                = 86400
   }
 
-  price_class = "PriceClass_100"
-
-  restrictions {
-    geo_restriction {
-      restriction_type = "none"
-    }
+  custom_error_response {
+    error_code            = 403
+    error_caching_min_ttl = var.error_ttl
+    response_code         = 403
+    response_page_path    = "/error.html"
   }
 
-  viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cert.arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.1_2016"
-  }
-
-  depends_on = [aws_acm_certificate_validation.cert_validation]
-
-}
-
-resource "aws_cloudfront_distribution" "console_stage_bucket_distribution" {
-  origin {
-    domain_name = var.console_stage_bucket_regional_domain_name
-    origin_id   = "ConsoleStageBucketS3Origin"
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.console_stage_oai.cloudfront_access_identity_path
-    }
-  }
-
- enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "${var.comment_prefix} ${var.console_stage_bucket_regional_domain_name}"
-  default_root_object = var.default_root_object
-
-  default_cache_behavior {
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "ConsoleStageBucketS3Origin"
-
-    forwarded_values {
-      query_string = false
-
-      cookies {
-        forward = "none"
-      }
-    }
-
-    viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
+  custom_error_response {
+    error_code            = 404
+    error_caching_min_ttl = var.error_ttl
+    response_code         = 404
+    response_page_path    = "/error.html"
   }
 
   price_class = "PriceClass_100"
@@ -166,26 +121,22 @@ resource "aws_cloudfront_distribution" "console_stage_bucket_distribution" {
     }
   }
 
-  viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cert.arn
+ viewer_certificate {
+    acm_certificate_arn      = var.console_certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.1_2016"
   }
 
-  depends_on = [aws_acm_certificate_validation.cert_validation]
-
+  depends_on = [var.console_certificate_validation]
 }
 
-resource "aws_cloudfront_origin_access_identity" "stage_oai" {
-  comment = "OAI for ${var.stage_bucket_website_domain}"
+
+resource "aws_cloudfront_origin_access_identity" "docs_oai" {
+  comment = "OAI for ${var.doc_bucket_website_domain}"
 }
 
-resource "aws_cloudfront_origin_access_identity" "docs_stage_oai" {
-  comment = "OAI for ${var.docs_stage_bucket_website_domain}"
-}
-
-resource "aws_cloudfront_origin_access_identity" "console_stage_oai" {
-  comment = "OAI for ${var.console_stage_bucket_website_domain}"
+resource "aws_cloudfront_origin_access_identity" "console_oai" {
+  comment = "OAI for ${var.console_bucket_website_domain}"
 }
 
 

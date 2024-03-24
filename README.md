@@ -80,7 +80,7 @@ This project uses Terraform Workspaces to manage different deployment environmen
 
    After selecting the workspace, initialize Terraform in that environment using:
 
-   terraform init
+   terraform init -backend-config="dev-backend.hcl"
 
 3. **Apply changes to the infrastructure for the selected environment:**
 
