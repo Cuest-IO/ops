@@ -66,14 +66,12 @@ This project uses Terraform Workspaces to manage different deployment environmen
 
    - To create a new workspace for a specific environment, run:
 
-     terraform workspace new stage
+     terraform workspace new dev
  
-     Replace "stage" with the desired environment name.
 
    - To switch between workspaces, use:
 
-
-     terraform workspace select stage
+     terraform workspace select dev
 
 
 2. **Initialize Terraform:**

@@ -46,19 +46,19 @@ module "cloudfront" {
 
 }
 
-# module "route53" {
-#   source = "./src/route53"
+module "route53" {
+  source = "./src/route53"
 
-#   project_name                                  = local.workspace.project_name
-#   domain_name                                   = local.workspace.domain_name
-#   environment                                   = local.environment
-#   region_name                                   = var.region_name
+  project_name                                  = local.workspace.project_name
+  domain_name                                   = local.workspace.domain_name
+  environment                                   = local.environment
+  region_name                                   = var.region_name
 
-#   docs_bucket_name                              = module.s3.docs_bucket_name
-#   console_bucket_name                           = module.s3.console_bucket_name
+  docs_bucket_name                              = module.s3.docs_bucket_name
+  console_bucket_name                           = module.s3.console_bucket_name
 
-#   cloudfront_zone_id                            = var.cloudfront_zone_id
-#   docs_bucket_distribution_domain_name          = module.cloudfront.docs_bucket_distribution_domain_name
-#   console_bucket_distribution_domain_name       = module.cloudfront.console_bucket_distribution_domain_name
-# }
+  cloudfront_zone_id                            = var.cloudfront_zone_id
+  docs_bucket_distribution_domain_name          = module.cloudfront.docs_bucket_distribution_domain_name
+  console_bucket_distribution_domain_name       = module.cloudfront.console_bucket_distribution_domain_name
+}
 

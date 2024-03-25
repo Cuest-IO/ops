@@ -1,6 +1,6 @@
 # Doc Cognito User Pool
-resource "aws_cognito_user_pool" "doc_user_pool" {
-  name = "${var.environment}-doc-cuest-user-pool"
+resource "aws_cognito_user_pool" "user_pool" {
+  name = "${var.environment}-cuest-user-pool"
   password_policy {
     minimum_length    = 8
     require_lowercase = true
@@ -16,40 +16,14 @@ resource "aws_cognito_user_pool" "doc_user_pool" {
 }
 
 # Doc User Pool Client
-resource "aws_cognito_user_pool_client" "doc_user_pool_client" {
-  name            = "${var.environment}-doc-cuest-user-pool-client"
-  user_pool_id    = aws_cognito_user_pool.doc_user_pool.id
+resource "aws_cognito_user_pool_client" "user_pool_client" {
+  name            = "${var.environment}-cuest-user-pool-client"
+  user_pool_id    = aws_cognito_user_pool.user_pool.id
   generate_secret = true
-  callback_urls   = local.doc_callback_url[*]
-  logout_urls     = local.doc_logout_url[*]
+  callback_urls   = local.callback_url[*]
+  logout_urls     = local.logout_url[*]
 }
 
-
-# Console Cognito User Pool
-resource "aws_cognito_user_pool" "console_user_pool" {
-  name = "${var.environment}-console-cuest-user-pool"
-  password_policy {
-    minimum_length    = 8
-    require_lowercase = true
-    require_numbers   = true
-    require_symbols   = true
-    require_uppercase = true
-  }
-
-  tags = {
-    project     = var.project_name,
-    environment = var.environment
-  }
-}
-
-# Console User Pool Client
-resource "aws_cognito_user_pool_client" "console_user_pool_client" {
-  name            = "${var.environment}-console-cuest-user-pool-client"
-  user_pool_id    = aws_cognito_user_pool.console_user_pool.id
-  generate_secret = true
-  callback_urls   = local.console_callback_url[*]
-  logout_urls     = local.console_logout_url[*]
-}
 
 
 # # Cognito Identity Pool
