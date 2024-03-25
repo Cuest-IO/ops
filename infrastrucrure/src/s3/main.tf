@@ -1,7 +1,7 @@
 // Docs
 
 resource "aws_s3_bucket" "docs_bucket" {
-  bucket = "docs.${var.domain_name}"
+  bucket = "${var.environment}.docs.${var.domain_name}"
 }
 
 resource "aws_s3_bucket_website_configuration" "docs_bucket_website" {
@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "docs_bucket" {
 // Console
 
 resource "aws_s3_bucket" "console_bucket" {
-  bucket = "console.${var.domain_name}"
+  bucket = "${var.environment}.console.${var.domain_name}"
 }
 
 resource "aws_s3_bucket_website_configuration" "console_bucket_website" {

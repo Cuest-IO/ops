@@ -12,7 +12,7 @@ resource "aws_cloudfront_distribution" "docs_bucket_distribution" {
   is_ipv6_enabled     = true
   comment             = "${var.comment_prefix} ${var.doc_bucket_website_domain}"
   default_root_object = "index.html"
-  aliases = ["docs.${var.domain_name}", "www.docs.${var.domain_name}"]
+  aliases = ["${var.environment}.docs.${var.domain_name}", "www.${var.environment}.docs.${var.domain_name}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -78,7 +78,7 @@ resource "aws_cloudfront_distribution" "console_bucket_distribution" {
   is_ipv6_enabled     = true
   comment             = "${var.comment_prefix} ${var.console_bucket_website_domain}"
   default_root_object = "index.html"
-  aliases = ["console.${var.domain_name}", "www.console.${var.domain_name}"]
+  aliases = ["${var.environment}.console.${var.domain_name}", "www.${var.environment}.console.${var.domain_name}"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]

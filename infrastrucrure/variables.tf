@@ -9,19 +9,14 @@ variable "region_name" {
 }
 
 variable "domain_name" {
-  type = map(string)
-  default = {
-    "dev"   = "dev.cuest.lol",
-    "stage" = "stage.cuest.lol",
-    "prod"  = "prod.cuest.lol"
-  }
+  type    = string
+  default = "cuest.lol"
 }
 
-variable "environments" {
+variable "environment" {
   type    = string
   default = "dev"
 }
-
 
 variable "cloudfront_zone_id" {
   description = "CloudFront hosted zone ID"

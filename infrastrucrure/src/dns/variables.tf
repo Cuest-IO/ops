@@ -1,25 +1,23 @@
 variable "project_name" {
-  type = string
+  type        = string
+  default     = "cuest"
 }
 
 variable "domain_name" {
-  type = string
+  type        = string
+  default     = "dev.cuest.lol"
 }
 
 variable "environment" {
-  type     = string
-  default  = "dev"
+  type        = string
+  default     = "dev"
 }
+
 
 variable "region_name" {
   type = string
 }
 
-
-variable "type" {
-  type = string
-  default = "A"
-}
 
 variable "cloudfront_zone_id" {
   description = "The CloudFront zone ID"
@@ -47,4 +45,3 @@ variable "console_bucket_distribution_domain_name" {
   description = "Domain name for the console stage bucket distribution"
   type        = string
 }
-
