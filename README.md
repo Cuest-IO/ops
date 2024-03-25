@@ -60,7 +60,13 @@ Please note that in addition to the resources mentioned above, the setup process
 
 This project uses Terraform Workspaces to manage different deployment environments, such as "dev," "stage," and "prod." Follow these steps to set up and manage your environments:
 
-1. **Initialize Your Workspace:**
+1. **Initialize Terraform:**
+
+   After selecting the workspace, initialize Terraform in that environment using:
+
+   terraform init -backend-config="dev-backend.hcl"
+
+2. **Initialize Your Workspace:**
 
    Before you start, ensure you have Terraform installed and AWS credentials configured properly.
 
@@ -73,12 +79,6 @@ This project uses Terraform Workspaces to manage different deployment environmen
 
      terraform workspace select dev
 
-
-2. **Initialize Terraform:**
-
-   After selecting the workspace, initialize Terraform in that environment using:
-
-   terraform init -backend-config="dev-backend.hcl"
 
 3. **Apply changes to the infrastructure for the selected environment:**
 

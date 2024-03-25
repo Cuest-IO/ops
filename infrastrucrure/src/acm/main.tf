@@ -4,14 +4,6 @@ resource "aws_acm_certificate" "docs_cert" {
   domain_name       = "docs.${var.domain_name}"
   validation_method = "DNS" //EMAIL
 
-  # subject_alternative_names = [
-  #   "www.${var.domain_name}",
-  #   "docs.${var.domain_name}",
-  #   "www.docs.${var.domain_name}",
-  #   "console.${var.domain_name}",
-  #   "www.console.${var.domain_name}"
-  # ]
-
   subject_alternative_names = [
     "www.docs.${var.domain_name}"
   ]
