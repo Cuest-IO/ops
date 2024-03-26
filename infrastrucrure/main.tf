@@ -1,90 +1,56 @@
-module "route53" {  
-  source                                          = "./src/route53"
-  project_name                                    = local.workspace.project_name
-  domain_name                                     = local.workspace.domain_name
-  environment                                     = local.environment
-  region_name                                     = var.region_name
-  s3_website_zone_id                              = var.s3_website_zone_id 
-  stage_bucket_name                               = module.s3.stage_bucket_website_domain
-  docs_stage_bucket_name                          = module.s3.docs_stage_bucket_name
-  console_stage_bucket_name                       = module.s3.console_stage_bucket_name
-  cloudfront_zone_id                              = var.cloudfront_zone_id
-  stage_bucket_distribution_domain_name           = module.cloudfront["stage"].stage_bucket_distribution_domain_name
-  docs_stage_bucket_distribution_domain_name      = module.cloudfront["docs"].stage_bucket_distribution_domain_name
-  console_stage_bucket_distribution_domain_name   = module.cloudfront["console"].stage_bucket_distribution_domain_name
-  cuest_zone_id                                   = data.aws_route53_zone.route53_zone.zone_id
-}
-
-module "s3" {
-  source        = "./src/s3"
-  project_name  = local.workspace.project_name
-  environment   = local.environment
-}
-
-module "acm" {
-  source        = "./src/acm"
-  project_name  = local.workspace.project_name
-  domain_name   = local.workspace.domain_name
-  environment   = local.environment
+terraform {
+  backend "s3" {
+    encrypt = true
+  }
 }
 
 module "cognito" {
-  source         = "./src/cognito"
-  project_name   = local.workspace.project_name
-  environment    = local.environment
-  callback_urls  = [
-    "https://stage.cuest.io/callback",
-    "https://www.stage.cuest.io/callback",
-    "https://docs.stage.cuest.io/callback",
-    "https://www.docs.stage.cuest.io/callback",
-    "https://console.stage.cuest.io/callback",
-    "https://www.console.stage.cuest.io/callback"
-  ]
-  logout_urls    = [
-    "https://stage.cuest.io/logout",
-    "https://www.stage.cuest.io/logout",
-    "https://docs.stage.cuest.io/logout",
-    "https://www.docs.stage.cuest.io/logout",
-    "https://console.stage.cuest.io/logout",
-    "https://www.console.stage.cuest.io/logout"
-  ]
+  source       = "./src/cognito"
+  project_name = var.project_name
+  domain_name  = var.domain_name
+  environment  = var.environment
+}
+
+
+module "s3" {
+  source                                        = "./src/s3"
+  project_name                                  = var.project_name
+  domain_name                                   = var.domain_name
+  environment                                   = var.environment
+ 
+  docs_cloudfront_origin_access_identity_iam    = module.cloudfront.docs_cloudfront_origin_access_identity_iam
+  console_cloudfront_origin_access_identity_iam = module.cloudfront.console_cloudfront_origin_access_identity_iam
+}
+
+module "dns" {
+  source                                   = "./src/dns"
+  project_name                             = var.project_name
+  domain_name                              = var.domain_name
+  environment                              = var.environment
+  region_name                              = var.region_name
+  docs_bucket_name                         = module.s3.docs_bucket_name
+  console_bucket_name                      = module.s3.console_bucket_name
+
+  cloudfront_zone_id                       = var.cloudfront_zone_id
+  docs_bucket_distribution_domain_name     = module.cloudfront.docs_bucket_distribution_domain_name
+  console_bucket_distribution_domain_name  = module.cloudfront.console_bucket_distribution_domain_name
 }
 
 module "cloudfront" {
-  source  = "./src/cloudfront"
-  for_each = toset(["stage", "docs", "console"])
+  source                         = "./src/cloudfront"
+  environment                    = var.environment
+  domain_name                    = var.domain_name
+  comment_prefix                 = "CloudFront for"
 
-  bucket = {
-    "stage"   = module.s3.stage_bucket_website_domain,
-    "docs"    = module.s3.docs_stage_bucket_website_domain,
-    "console" = module.s3.console_stage_bucket_website_domain
-  }[each.key]
+  doc_bucket_website_domain      = module.s3.docs_bucket_website_domain
+  console_bucket_website_domain  = module.s3.console_bucket_website_domain
 
-  bucket_name = {
-    "stage"   = module.s3.stage_bucket_website_domain,
-    "docs"    = module.s3.docs_stage_bucket_website_domain,
-    "console" = module.s3.console_stage_bucket_website_domain
-  }[each.key]
+  docs_certificate_arn           = module.dns.docs_certificate_arn
+  console_certificate_arn        = module.dns.console_certificate_arn
 
-  stage_bucket_name                   = module.s3.stage_bucket_website_domain
-  docs_bucket_name                    = module.s3.docs_stage_bucket_website_domain
-  console_bucket_name                 = module.s3.console_stage_bucket_website_domain
-  docs_stage_bucket_name              = module.s3.docs_stage_bucket_website_domain
-  console_stage_bucket_name           = module.s3.console_stage_bucket_website_domain
-  stage_bucket_website_domain         = module.s3.stage_bucket_website_domain
-  docs_stage_bucket_website_domain    = module.s3.docs_stage_bucket_website_domain
-  console_stage_bucket_website_domain = module.s3.console_stage_bucket_website_domain
+  docs_certificate_validation    = module.dns.docs_certificate_validation
+  console_certificate_validation = module.dns.console_certificate_validation
 
-  bucket_regional_domain = {
-    "stage"   = module.s3.stage_bucket_website_domain != "" ? "${module.s3.stage_bucket_website_domain}.s3-us-west-1.amazonaws.com" : "cuest-stage-bucket.s3-us-west-1.amazonaws.com",
-    "docs"    = module.s3.docs_stage_bucket_website_domain != "" ? "${module.s3.docs_stage_bucket_website_domain}.s3-us-west-1.amazonaws.com" : "cuest-docs-bucket.s3-us-west-1.amazonaws.com",
-    "console" = module.s3.console_stage_bucket_website_domain != "" ? "${module.s3.console_stage_bucket_website_domain}.s3-us-west-1.amazonaws.com" : "cuest-console-bucket.s3-us-west-1.amazonaws.com"
-  }[each.key]
-
-  acm_certificate_arn = module.acm.certificate_arn
-  enabled             = true
-  is_ipv6_enabled     = true
-  default_root_object = "index.html"
-  price_class         = "PriceClass_100"
-  comment_prefix      = "CloudFront for"
 }
+
+

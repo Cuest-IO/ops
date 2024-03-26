@@ -1,31 +1,27 @@
+// Doc
 
-output "docs_stage_bucket_name" {
-  value       = aws_s3_bucket.docs_stage_bucket.bucket
+output "docs_bucket_name" {
+  value = aws_s3_bucket.docs_bucket.bucket
 }
 
-output "console_stage_bucket_name" {
-  value       = aws_s3_bucket.console_stage_bucket.bucket
-}
-output "stage_bucket_website_domain" {
-  value       = aws_s3_bucket.stage_bucket.website_domain
+output "docs_bucket_website_domain" {
+  value = aws_s3_bucket.docs_bucket.bucket_regional_domain_name
 }
 
-output "docs_stage_bucket_website_domain" {
-  value       = aws_s3_bucket.docs_stage_bucket.website_domain
+output "docs_bucket_arn" {
+  value = aws_s3_bucket.docs_bucket.arn
 }
 
-output "console_stage_bucket_website_domain" {
-  value        = aws_s3_bucket.console_stage_bucket.website_domain
+// Console
+
+output "console_bucket_name" {
+  value = aws_s3_bucket.console_bucket.bucket
 }
 
-output "stage_bucket_arn" {
-  value      = aws_s3_bucket.stage_bucket.arn
+output "console_bucket_website_domain" {
+  value = aws_s3_bucket.console_bucket.bucket_regional_domain_name
 }
 
-output "docs_stage_bucket_arn" {
-  value      = aws_s3_bucket.docs_stage_bucket.arn
-}
-
-output "console_stage_bucket_arn" {
-  value      = aws_s3_bucket.console_stage_bucket.arn
+output "console_bucket_arn" {
+  value = aws_s3_bucket.console_bucket.arn
 }

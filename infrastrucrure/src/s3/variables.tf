@@ -3,11 +3,15 @@ variable "project_name" {
 }
 
 variable "environment" {
-  type = string
+  type     = string
+  default  = "dev"
 }
-variable "s3_website_zone_id" {
-  type        = string
-  default = "Z3AQBSTGFYJSTF"
-}
+
+variable "domain_name" {}
+
+variable "docs_cloudfront_origin_access_identity_iam" {}
+
+variable "console_cloudfront_origin_access_identity_iam" {}
+
 
 
