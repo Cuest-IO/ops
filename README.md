@@ -28,7 +28,6 @@ Each S3 bucket is configured for static website hosting, with an index.html file
 
 **ACM Certificate**
 An ACM certificate is created to secure the custom domain names used for each deployment environment.
-For every certificate, we need to create records in Route 53 manually (In AWS console)
 
 **Cognito Setup**
 Cognito is used to manage user authentication for the CUEST project.
