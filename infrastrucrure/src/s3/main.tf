@@ -33,7 +33,6 @@ data "aws_iam_policy_document" "docs_bucket" {
 }
 
 // Console
-
 resource "aws_s3_bucket" "console_bucket" {
   bucket = "${var.environment}.console.${var.domain_name}"
 }
@@ -68,9 +67,8 @@ data "aws_iam_policy_document" "console_bucket" {
 }
 
 // Web
-
 resource "aws_s3_bucket" "web_bucket" {
-  bucket = "${var.environment}.console.${var.domain_name}"
+  bucket = "${var.environment}.web.${var.domain_name}"
 }
 
 resource "aws_s3_bucket_website_configuration" "web_bucket_website" {

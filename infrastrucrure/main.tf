@@ -33,7 +33,7 @@ module "cloudfront" {
   doc_bucket_website_domain      = module.s3.docs_bucket_website_domain
   console_bucket_website_domain  = module.s3.console_bucket_website_domain
 
-  docs_certificate_arn           = module.dns.web_certificate_arn
+  web_certificate_arn            = module.dns.web_certificate_arn
   docs_certificate_arn           = module.dns.docs_certificate_arn
   console_certificate_arn        = module.dns.console_certificate_arn
 
