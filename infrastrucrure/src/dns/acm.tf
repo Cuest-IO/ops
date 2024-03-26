@@ -45,3 +45,27 @@ resource "aws_acm_certificate_validation" "console_cert_validation" {
   certificate_arn         = aws_acm_certificate.console_cert.arn
   validation_record_fqdns = [for record in aws_route53_record.console_route53_record : record.fqdn]
 }
+
+// Web
+resource "aws_acm_certificate" "web_cert" {
+  domain_name       = "${var.environment}.web.${var.domain_name}"
+  validation_method = "DNS" //EMAIL
+
+  subject_alternative_names = [
+    "www.${var.environment}.web.${var.domain_name}"
+  ]
+
+  tags = {
+    project     = var.project_name,
+    environment = var.environment
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_acm_certificate_validation" "web_cert_validation" {
+  certificate_arn         = aws_acm_certificate.web_cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.web_route53_record : record.fqdn]
+}

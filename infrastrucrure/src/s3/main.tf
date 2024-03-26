@@ -67,4 +67,37 @@ data "aws_iam_policy_document" "console_bucket" {
   }
 }
 
+// Web
+
+resource "aws_s3_bucket" "web_bucket" {
+  bucket = "${var.environment}.console.${var.domain_name}"
+}
+
+resource "aws_s3_bucket_website_configuration" "web_bucket_website" {
+  bucket = aws_s3_bucket.web_bucket.id
+  index_document {
+    suffix = "index.html"
+  }
+  error_document {
+    key = "error.html"
+  }
+}
+
+resource "aws_s3_bucket_policy" "web_bucket" {
+  bucket = aws_s3_bucket.web_bucket.id
+  policy = data.aws_iam_policy_document.web_bucket.json
+}
+
+data "aws_iam_policy_document" "web_bucket" {
+  statement {
+    sid       = "WebBucketGetObjectForCloudFront"
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.web_bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.web_cloudfront_origin_access_identity_iam]
+    }
+  }
+}
 
