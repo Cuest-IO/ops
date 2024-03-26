@@ -25,3 +25,17 @@ output "console_bucket_website_domain" {
 output "console_bucket_arn" {
   value = aws_s3_bucket.console_bucket.arn
 }
+
+// Web
+
+output "web_bucket_name" {
+  value = aws_s3_bucket.web_bucket.bucket
+}
+
+output "web_bucket_website_domain" {
+  value = aws_s3_bucket.web_bucket.bucket_regional_domain_name
+}
+
+output "web_bucket_arn" {
+  value = aws_s3_bucket.web_bucket.arn
+}

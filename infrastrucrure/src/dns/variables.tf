@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "domain_name" {
   type        = string
-  default     = "dev.cuest.lol"
+  default     = "dev.cuest.io"
 }
 
 variable "environment" {
@@ -24,6 +24,12 @@ variable "cloudfront_zone_id" {
   type        = string
 }
 
+// Bucket Names
+
+variable "web_bucket_name" {
+  description = "Name of the docs stage bucket"
+  type        = string
+}
 
 variable "docs_bucket_name" {
   description = "Name of the docs stage bucket"
@@ -35,6 +41,12 @@ variable "console_bucket_name" {
   type        = string
 }
 
+// Distribution Domain Names
+
+variable "web_bucket_distribution_domain_name" {
+  description = "Domain name for the docs stage bucket distribution"
+  type        = string
+}
 
 variable "docs_bucket_distribution_domain_name" {
   description = "Domain name for the docs stage bucket distribution"

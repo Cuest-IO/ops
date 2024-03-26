@@ -10,7 +10,7 @@ variable "region_name" {
 
 variable "domain_name" {
   type    = string
-  default = "cuest.lol"
+  default = "cuest.io"
 }
 
 variable "environment" {

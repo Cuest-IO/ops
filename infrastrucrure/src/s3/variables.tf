@@ -9,6 +9,10 @@ variable "environment" {
 
 variable "domain_name" {}
 
+// cloudfront_origin_access_identity_iam
+
+variable "web_cloudfront_origin_access_identity_iam" {}
+
 variable "docs_cloudfront_origin_access_identity_iam" {}
 
 variable "console_cloudfront_origin_access_identity_iam" {}
